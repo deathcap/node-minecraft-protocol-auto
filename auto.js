@@ -10,6 +10,7 @@ function createClientAuto(options, cb) {
 
   console.log('pinging',options.host);
   // TODO: refactor with DNS SRV lookup in NMP
+  // TODO: detect ping timeout, https://github.com/PrismarineJS/node-minecraft-protocol/issues/329
   ping(options, function(err, response) {
     var client;
 
