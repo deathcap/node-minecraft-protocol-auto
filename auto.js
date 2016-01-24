@@ -5,11 +5,15 @@ var mc = require('minecraft-protocol');
 var ping = mc.ping;
 var assert = require('assert');
 
-// TODO: move into minecraft-data? is it already there?
-var protocol2version = {
-  '47': '1.8.9',
-  '5': '1.7.10'
-};
+// see http://wiki.vg/Protocol_version_numbers
+// Get the minecraft-data version string for a protocol version
+function protocol2version(n) {
+  if (n >= 48) return '1.9'; // 1.9 snapshots (15w+), 16w03a is 96
+  if (n >= 6 && n <= 47) return '1.8.9'; // including 1.8 snapshots (14w)
+  if (n >= 4 && n <= 5) return '1.7.10'; // including 1.7 prereleases
+  // TODO: earlier versions "Beginning with the 1.7.1 pre-release (and release 1.7.2), versioning was reset."
+  throw new Error(`unsupported/unknown protocol version: ${versionProtocol}, update protocol2version`);
+}
 
 function createClientAuto(options, cb) {
   assert.ok(options, 'options is required');
@@ -36,10 +40,7 @@ function createClientAuto(options, cb) {
     // Note that versionName is a descriptive version stirng like '1.8.9' on vailla, but other
     // servers add their own name (Spigot 1.8.8, Glowstone++ 1.8.9) so we cannot use it directly,
     // even though it is in a format accepted by minecraft-data. Instead, translate the protocol.
-    options.version = protocol2version[versionProtocol];
-    if (!options.version) {
-      throw new Error(`unsupported/unknown protocol version: ${versionProtocol}, update protocol2Version`);
-    }
+    options.version = protocol2version(versionProtocol);
 
     if (response.modinfo && response.modinfo.type === 'FML') {
       // Use the list of Forge mods from the server ping, so client will match server
