@@ -1,0 +1,19 @@
+{
+  "name": "minecraft-protocol-auto",
+  "description": "",
+  "version": "0.0.0",
+  "main": "auto.js",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:deathcap/node-minecraft-protocol-auto.git"
+  },
+  "keywords": [
+    "minecraft",
+    "protocol",
+    "automatic",
+    "handshake"
+  ],
+  "dependencies": {
+  },
+  "license": "MIT"
+}
