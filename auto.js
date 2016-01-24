@@ -5,6 +5,12 @@ var mc = require('minecraft-protocol');
 var ping = mc.ping;
 var assert = require('assert');
 
+// TODO: move into minecraft-data? is it already there?
+var protocol2version = {
+  '47': '1.8.9',
+  '5': '1.7.10'
+};
+
 function createClientAuto(options, cb) {
   assert.ok(options, 'options is required');
 
@@ -27,11 +33,13 @@ function createClientAuto(options, cb) {
     var versionProtocol = response.version.protocol;//    47,      5
 
     console.log(`Server version: ${versionName}, protocol: ${versionProtocol}`);
-    // TODO: test or report unsupported versions?
-    // TODO: fix non-vanilla/FML server support! Spigot 1.8.8, Glowstone++ 1.8.9 is 'versionName'; should use versionProtocol
-    //
-
-    options.version = versionName;
+    // Note that versionName is a descriptive version stirng like '1.8.9' on vailla, but other
+    // servers add their own name (Spigot 1.8.8, Glowstone++ 1.8.9) so we cannot use it directly,
+    // even though it is in a format accepted by minecraft-data. Instead, translate the protocol.
+    options.version = protocol2version[versionProtocol];
+    if (!options.version) {
+      throw new Error(`unsupported/unknown protocol version: ${versionProtocol}, update protocol2Version`);
+    }
 
     if (response.modinfo && response.modinfo.type === 'FML') {
       // Use the list of Forge mods from the server ping, so client will match server
