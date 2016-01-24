@@ -18,6 +18,20 @@ function createClientAuto(options, cb) {
     console.log('ping response',response);
     // TODO: could also use ping pre-connect to save description, type, negotiate protocol etc.
     //  ^ see https://github.com/PrismarineJS/node-minecraft-protocol/issues/327
+    var motd = response.description;
+    console.log('Server description:',motd); // TODO: save
+
+    // Pass server-reported version to protocol handler
+    // The version string is interpereted by https://github.com/PrismarineJS/node-minecraft-data
+    var versionName = response.version.name;        // 1.8.9, 1.7.10
+    var versionProtocol = response.version.protocol;//    47,      5
+
+    console.log(`Server version: ${versionName}, protocol: ${versionProtocol}`);
+    // TODO: test or report unsupported versions?
+    // TODO: fix non-vanilla/FML server support! Spigot 1.8.8, Glowstone++ 1.8.9 is 'versionName'; should use versionProtocol
+    //
+
+    options.version = versionName;
 
     if (response.modinfo && response.modinfo.type === 'FML') {
       // Use the list of Forge mods from the server ping, so client will match server
