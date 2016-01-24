@@ -13,7 +13,12 @@
     "automatic",
     "handshake"
   ],
+  "scripts": {
+    "start": "node demo.js localhost 25565"
+  },
   "dependencies": {
+    "minecraft-protocol": "^0.16.6",
+    "minecraft-protocol-forge": "deathcap/node-minecraft-protocol-forge"
   },
   "license": "MIT"
 }
