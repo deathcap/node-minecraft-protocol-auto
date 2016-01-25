@@ -1,6 +1,6 @@
 {
   "name": "minecraft-protocol-auto",
-  "description": "",
+  "description": "Automatic protocol negotiation for node-minecraft-protocol",
   "version": "0.0.0",
   "main": "auto.js",
   "repository": {
@@ -11,6 +11,9 @@
     "minecraft",
     "protocol",
     "automatic",
+    "minecraft-protocol",
+    "forge",
+    "fml",
     "handshake"
   ],
   "scripts": {
